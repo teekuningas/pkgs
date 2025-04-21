@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     poetry2nix = { url = "github:nix-community/poetry2nix"; inputs.nixpkgs.follows = "nixpkgs"; inputs.flake-utils.follows = "flake-utils"; };
   };
 
@@ -16,6 +16,7 @@
         packages = {
           ospeak = pkgs.callPackage ./pkgs/ospeak { python3Packages = pkgs.python312Packages; };
           files-to-prompt = pkgs.callPackage ./pkgs/files-to-prompt { python3Packages = pkgs.python312Packages;};
+          llm-azure = pkgs.callPackage ./pkgs/llm-azure { python3Packages = pkgs.python312Packages;};
         };
       }
     );
