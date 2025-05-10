@@ -6,15 +6,15 @@
   llm,
 }:
 python3Packages.buildPythonPackage rec {
-  pname = "llm-azure";
-  version = "1.1";
+  pname = "llm-echo";
+  version = "0.2";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "fabge";
-    repo = "llm-azure";
+    owner = "simonw";
+    repo = "llm-echo";
     tag = version;
-    hash = "sha256-SyxNwkUvQ6kZqRr6aglZi5r90bNY/6QEA8rUZ4UAl9g=";
+    hash = "sha256-KtdsvXJQRJ3EEJ25i6ccbVxMsWlDsxa+HJ7bFzyYGNI=";
   };
 
   build-system = [
@@ -26,8 +26,8 @@ python3Packages.buildPythonPackage rec {
   ];
 
   meta = {
-    description = "LLM plugin to access azure openai";
-    homepage = "https://github.com/fabge/llm-azure";
+    description = "LLM plugin to introduce echo model";
+    homepage = "https://github.com/simonw/llm-echo";
     license = lib.licenses.asl20;
   };
 }
