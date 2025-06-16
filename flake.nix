@@ -18,6 +18,7 @@
           files-to-prompt = pkgs.callPackage ./pkgs/files-to-prompt { python3Packages = pkgs.python312Packages;};
           llm-azure = pkgs.callPackage ./pkgs/llm-azure { python3Packages = pkgs.python312Packages;};
           llm-echo = pkgs.callPackage ./pkgs/llm-echo { python3Packages = pkgs.python312Packages;};
+          llm-fragments-site-text = pkgs.callPackage ./pkgs/llm-fragments-site-text { python3Packages = pkgs.python312Packages;};
         };
       }
     );
