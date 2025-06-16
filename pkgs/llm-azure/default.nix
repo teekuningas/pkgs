@@ -13,8 +13,8 @@ python3Packages.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "teekuningas";
     repo = "llm-azure";
-    rev = "c5cc6f3a9494408a94325c7dd6f6d1243949f462";
-    hash = "sha256-KPjvnj8vq0dx6bdMOyg0R3F5CwtYcMeF7VWHA9GQlLU=";
+    rev = "5f9e87eccfcf507a8e1dffcf5b2d4b6d73b97222";
+    hash = "sha256-IRo8fpmtA4mEdfseHPk7MN2kdLeIuue5/AUQHItSHpc=";
   };
 
   build-system = [
