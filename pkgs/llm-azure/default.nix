@@ -7,14 +7,14 @@
 }:
 python3Packages.buildPythonPackage rec {
   pname = "llm-azure";
-  version = "1.1";
+  version = "2.0";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "fabge";
+    owner = "bexelbie";
     repo = "llm-azure";
-    tag = version;
-    hash = "sha256-SyxNwkUvQ6kZqRr6aglZi5r90bNY/6QEA8rUZ4UAl9g=";
+    rev = "8033b71f07f309ff7b66e9a7527ca96fbc9ec308";
+    hash = "sha256-SwDYejBecC6BT+JzEHEhtnOzYgi0eUDl1hCS99/mxGc=";
   };
 
   build-system = [
@@ -27,7 +27,7 @@ python3Packages.buildPythonPackage rec {
 
   meta = {
     description = "LLM plugin to access azure openai";
-    homepage = "https://github.com/fabge/llm-azure";
+    homepage = "https://github.com/bexelbie/llm-azure";
     license = lib.licenses.asl20;
   };
 }
