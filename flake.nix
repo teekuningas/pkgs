@@ -16,6 +16,8 @@
         packages = {
           safepilot = pkgs.callPackage ./pkgs/safepilot { };
           safepilot-with-copilot = pkgs.callPackage ./pkgs/safepilot { withCopilot = true; };
+          safepilot-with-gemini = pkgs.callPackage ./pkgs/safepilot { withGemini = true; };
+          safepilot-with-opencode = pkgs.callPackage ./pkgs/safepilot { withOpencode = true; };
           safepilot-full = pkgs.callPackage ./pkgs/safepilot { withCopilot = true; withGemini = true; withOpencode = true; };
           ospeak = pkgs.callPackage ./pkgs/ospeak { python3Packages = pkgs.python312Packages; };
           files-to-prompt = pkgs.callPackage ./pkgs/files-to-prompt { python3Packages = pkgs.python312Packages;};
