@@ -80,6 +80,11 @@ let
       mkdir -p usr/bin
       ln -s ${pkgs.coreutils}/bin/env usr/bin/env
 
+      # ELF interpreter required by prebuilt native binaries shipped by npm packages
+      # (lightningcss, esbuild, @swc/core, etc. all hard-code /lib64/ld-linux-x86-64.so.2)
+      mkdir -p lib64
+      ln -sf ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 lib64/ld-linux-x86-64.so.2
+
       mkdir -p home/user
       chmod 1777 home/user
       mkdir -p home/user/.local/share
