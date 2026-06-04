@@ -93,6 +93,8 @@ let
       chmod 1777 workspace
       mkdir -p tmp
       chmod 1777 tmp
+      mkdir -p var
+      chmod u+w var
       mkdir -p var/tmp
       chmod 1777 var/tmp
 
