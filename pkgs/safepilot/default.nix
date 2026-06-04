@@ -32,6 +32,7 @@ let
     git
     gh
     nodejs
+    podman
     stdenv.cc.cc.lib
     zlib
     glibcLocales
@@ -148,6 +149,17 @@ let
   #   DEST    relative paths are prefixed with /workspace/
   #           use "." as DEST to mean /workspace itself
   #
+  # Convenience flags (consumed by this script, not passed to podman):
+  #   --ssh       forward SSH_AUTH_SOCK into the container
+  #   --git       mount ~/.gitconfig and forward git identity env vars
+  #   --copilot   mount ~/.copilot
+  #   --gemini    mount ~/.gemini
+  #   --opencode  mount opencode config/cache dirs
+  #   --npm       mount ~/.npm
+  #   --podman    forward the host rootless podman socket so the container's
+  #               podman client can run sibling containers on the host daemon
+  #   --plain     ignore defaultArgs
+  #
   # Examples:
   #   safepilot -v .:/workspace:rw          # mount CWD as /workspace
   #   safepilot -v .:.:rw                   # same, using relative dest
@@ -227,6 +239,15 @@ let
           mounts+=("-v" "$HOME/.local/share/opencode:/home/user/.local/share/opencode:rw")
           mounts+=("-v" "$HOME/.config/opencode:/home/user/.config/opencode:rw")
           mounts+=("-v" "$HOME/.cache/opencode:/home/user/.cache/opencode:rw")
+          ;;
+        --podman)
+          host_socket="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/podman/podman.sock"
+          if [[ -S "$host_socket" ]]; then
+            mounts+=("-v" "$host_socket:/run/podman/podman.sock:rw")
+            env_args+=("-e" "CONTAINER_HOST=unix:///run/podman/podman.sock")
+          else
+            echo "Warning: podman socket not found at $host_socket" >&2
+          fi
           ;;
         -v)  shift; mounts+=("-v" "$(expand_v "$1")") ;;
         -v*) mounts+=("-v" "$(expand_v "''${1#-v}")") ;;
