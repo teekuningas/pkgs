@@ -270,9 +270,9 @@ let
       -e HOME=/home/user \
       -v "$passwd_tmp:/etc/passwd:ro" \
       -v "$group_tmp:/etc/group:ro" \
-      --tmpfs /home/user/.config:uid=$(id -u),gid=$(id -g),mode=0755 \
-      --tmpfs /home/user/.cache:uid=$(id -u),gid=$(id -g),mode=0755 \
-      --tmpfs /home/user/.local:uid=$(id -u),gid=$(id -g),mode=0755 \
+      --mount type=tmpfs,dst=/home/user/.config,U=true \
+      --mount type=tmpfs,dst=/home/user/.cache,U=true \
+      --mount type=tmpfs,dst=/home/user/.local,U=true \
       "''${mounts[@]}" \
       "''${env_args[@]}" \
       "''${extra_args[@]}" \
