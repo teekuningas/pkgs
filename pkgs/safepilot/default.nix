@@ -65,6 +65,7 @@ let
     if [[ ! -f /nix/var/nix/db/db.sqlite ]]; then
       nix-store --load-db < /nix/registration
     fi
+    mkdir -p ~/.npm
     exec "$@"
   '';
 
@@ -88,12 +89,6 @@ let
 
       mkdir -p home/user
       chmod 1777 home/user
-      mkdir -p home/user/.local/share
-      mkdir -p home/user/.local/state
-      mkdir -p home/user/.config
-      mkdir -p home/user/.cache
-      mkdir -p home/user/.npm
-      chmod 1777 home/user/.local home/user/.local/share home/user/.local/state home/user/.config home/user/.cache home/user/.npm
       mkdir -p workspace
       chmod 1777 workspace
       mkdir -p tmp
@@ -275,6 +270,9 @@ let
       -e HOME=/home/user \
       -v "$passwd_tmp:/etc/passwd:ro" \
       -v "$group_tmp:/etc/group:ro" \
+      --tmpfs /home/user/.config:uid=$(id -u),gid=$(id -g),mode=0755 \
+      --tmpfs /home/user/.cache:uid=$(id -u),gid=$(id -g),mode=0755 \
+      --tmpfs /home/user/.local:uid=$(id -u),gid=$(id -g),mode=0755 \
       "''${mounts[@]}" \
       "''${env_args[@]}" \
       "''${extra_args[@]}" \
