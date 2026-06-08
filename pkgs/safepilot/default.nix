@@ -87,11 +87,9 @@ let
     mkdir -p ~/.npm
 
     if [[ "''${SAFEPILOT_GEMINI_KEYRING:-}" == "1" ]]; then
-      if [[ -z "''${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
-        exec dbus-run-session --config-file=${pkgs.dbus}/share/dbus-1/session.conf "$0" "$@"
-      fi
-      export $(echo -n "dummy" | gnome-keyring-daemon --unlock)
+      export DBUS_SESSION_BUS_ADDRESS=$(dbus-daemon --config-file=${pkgs.dbus}/share/dbus-1/session.conf --print-address --fork)
       eval $(gnome-keyring-daemon --start --components=secrets)
+      export $(echo -n "dummy" | gnome-keyring-daemon --unlock)
     fi
 
     exec "$@"
