@@ -157,6 +157,11 @@ let
         "NIX_SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
         "LANG=en_US.UTF-8"
         "LOCALE_ARCHIVE=${pkgs.glibcLocales}/lib/locale/locale-archive"
+        # Force Go programs to use the C library (glibc) DNS resolver.
+        # Go's pure-Go resolver sends raw UDP queries that time out on
+        # slirp4netns's DNS forwarder in rootless Podman, causing 5s delays
+        # that break antigravity-cli's keyring auth timeout.
+        "GODEBUG=netdns=cgo"
       ];
     };
   };
