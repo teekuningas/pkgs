@@ -51,6 +51,10 @@ let
     ++ lib.optionals withGemini [
       pkgs.gemini-cli
       pkgs.antigravity-cli
+      pkgs.dbus
+      pkgs.gnome-keyring
+      pkgs.libsecret
+      pkgs.xdg-utils
     ]
     ++ lib.optionals withOpencode [ pkgs.opencode ];
 
@@ -81,6 +85,13 @@ let
       nix-store --load-db < /nix/registration
     fi
     mkdir -p ~/.npm
+
+    if [[ "''${SAFEPILOT_GEMINI_KEYRING:-}" == "1" ]]; then
+      export DBUS_SESSION_BUS_ADDRESS=$(dbus-daemon --session --print-address --fork)
+      export $(echo -n "dummy" | gnome-keyring-daemon --unlock)
+      gnome-keyring-daemon --start --components=secrets
+    fi
+
     exec "$@"
   '';
 
@@ -242,8 +253,10 @@ let
           fi
           ;;
         --gemini)
-          mkdir -p "$HOME/.gemini"
+          mkdir -p "$HOME/.gemini" "$HOME/.gemini/keyrings"
           mounts+=("-v" "$HOME/.gemini:/home/user/.gemini:rw")
+          mounts+=("-v" "$HOME/.gemini/keyrings:/home/user/.local/share/keyrings:rw")
+          env_args+=("-e" "SAFEPILOT_GEMINI_KEYRING=1")
           ;;
         --copilot)
           mkdir -p "$HOME/.copilot"
