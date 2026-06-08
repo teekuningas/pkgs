@@ -89,7 +89,7 @@ let
     if [[ "''${SAFEPILOT_GEMINI_KEYRING:-}" == "1" ]]; then
       export DBUS_SESSION_BUS_ADDRESS=$(dbus-daemon --config-file=${pkgs.dbus}/share/dbus-1/session.conf --print-address --fork)
       export $(echo -n "dummy" | gnome-keyring-daemon --unlock)
-      gnome-keyring-daemon --start --components=secrets
+      eval $(gnome-keyring-daemon --start --components=secrets)
     fi
 
     exec "$@"
