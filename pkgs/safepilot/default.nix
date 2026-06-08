@@ -1,4 +1,11 @@
-{ pkgs, lib, defaultArgs ? [], withCopilot ? false, withGemini ? false, withOpencode ? false }:
+{
+  pkgs,
+  lib,
+  defaultArgs ? [ ],
+  withCopilot ? false,
+  withGemini ? false,
+  withOpencode ? false,
+}:
 
 let
   baseTools = with pkgs; [
@@ -38,9 +45,13 @@ let
     glibcLocales
   ];
 
-  tools = baseTools
+  tools =
+    baseTools
     ++ lib.optionals withCopilot [ pkgs.github-copilot-cli ]
-    ++ lib.optionals withGemini  [ pkgs.gemini-cli ]
+    ++ lib.optionals withGemini [
+      pkgs.gemini-cli
+      pkgs.antigravity-cli
+    ]
     ++ lib.optionals withOpencode [ pkgs.opencode ];
 
   nixConf = pkgs.writeTextFile {
@@ -55,7 +66,11 @@ let
 
   # All paths baked into the image root, shared between copyToRoot and
   # closureInfo so they stay in sync.
-  containerPaths = tools ++ [ pkgs.dockerTools.fakeNss pkgs.cacert nixConf ];
+  containerPaths = tools ++ [
+    pkgs.dockerTools.fakeNss
+    pkgs.cacert
+    nixConf
+  ];
 
   # Loaded into the nix DB on first container start so nix treats baked-in
   # store paths as valid and won't attempt to re-substitute them.
@@ -118,7 +133,12 @@ let
       Cmd = [ "${pkgs.bashInteractive}/bin/bash" ];
       Env = [
         "PATH=${lib.makeBinPath tools}"
-        "LD_LIBRARY_PATH=${lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib pkgs.zlib ]}"
+        "LD_LIBRARY_PATH=${
+          lib.makeLibraryPath [
+            pkgs.stdenv.cc.cc.lib
+            pkgs.zlib
+          ]
+        }"
         "HOME=/home/user"
         "USER=user"
         "TERM=xterm-256color"
@@ -284,9 +304,13 @@ let
       bash
   '';
 
-in pkgs.symlinkJoin {
+in
+pkgs.symlinkJoin {
   name = "safepilot";
-  paths = [ launcher loadScript ];
+  paths = [
+    launcher
+    loadScript
+  ];
   meta = {
     description = "Sandboxed AI coding environment via podman";
     mainProgram = "safepilot";
