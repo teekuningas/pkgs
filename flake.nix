@@ -23,6 +23,7 @@
       in
       {
         packages = {
+          agentsview = pkgs.callPackage ./pkgs/agentsview { };
           safepilot = pkgs.callPackage ./pkgs/safepilot { };
           safepilot-with-copilot = pkgs.callPackage ./pkgs/safepilot { withCopilot = true; };
           safepilot-with-gemini = pkgs.callPackage ./pkgs/safepilot { withGemini = true; };
