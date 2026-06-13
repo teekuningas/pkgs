@@ -28,10 +28,12 @@
           safepilot-with-copilot = pkgs.callPackage ./pkgs/safepilot { withCopilot = true; };
           safepilot-with-gemini = pkgs.callPackage ./pkgs/safepilot { withGemini = true; };
           safepilot-with-opencode = pkgs.callPackage ./pkgs/safepilot { withOpencode = true; };
+          safepilot-with-claude-code = pkgs.callPackage ./pkgs/safepilot { withClaudeCode = true; };
           safepilot-full = pkgs.callPackage ./pkgs/safepilot {
             withCopilot = true;
             withGemini = true;
             withOpencode = true;
+            withClaudeCode = true;
           };
         };
       }
