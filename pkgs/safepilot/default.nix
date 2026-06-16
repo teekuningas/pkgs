@@ -282,7 +282,7 @@ let
           ;;
         --claude-code)
           mkdir -p "$HOME/.claude"
-          touch "$HOME/.claude.json"
+          [[ -s "$HOME/.claude.json" ]] || echo '{}' > "$HOME/.claude.json"
           mounts+=("-v" "$HOME/.claude:/home/user/.claude:rw")
           mounts+=("-v" "$HOME/.claude.json:/home/user/.claude.json:rw")
           ;;
