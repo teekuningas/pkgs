@@ -6,6 +6,7 @@
   withGemini ? false,
   withOpencode ? false,
   withClaudeCode ? false,
+  withPi ? false,
 }:
 
 let
@@ -58,7 +59,8 @@ let
       pkgs.xdg-utils
     ]
     ++ lib.optionals withOpencode [ pkgs.opencode ]
-    ++ lib.optionals withClaudeCode [ pkgs.claude-code ];
+    ++ lib.optionals withClaudeCode [ pkgs.claude-code ]
+    ++ lib.optionals withPi [ pkgs.pi-coding-agent ];
 
   nixConf = pkgs.writeTextFile {
     name = "nix-conf";
@@ -193,6 +195,7 @@ let
   #   --gemini    mount ~/.gemini
   #   --opencode  mount opencode config/cache dirs
   #   --claude-code mount claude config dirs
+  #   --pi        mount ~/.pi config dir
   #   --npm       mount ~/.npm
   #   --podman    forward the host rootless podman socket so the container's
   #               podman client can run sibling containers on the host daemon
@@ -285,6 +288,10 @@ let
           [[ -s "$HOME/.claude.json" ]] || echo '{}' > "$HOME/.claude.json"
           mounts+=("-v" "$HOME/.claude:/home/user/.claude:rw")
           mounts+=("-v" "$HOME/.claude.json:/home/user/.claude.json:rw")
+          ;;
+        --pi)
+          mkdir -p "$HOME/.pi"
+          mounts+=("-v" "$HOME/.pi:/home/user/.pi:rw")
           ;;
         --podman)
           host_socket="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/podman/podman.sock"
